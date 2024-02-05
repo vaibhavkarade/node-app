@@ -12,15 +12,20 @@ spec:
   template:
     metadata:
       labels:
-        app: nodeapp 
+        app: nodeapp
     spec:
       containers:
       - name: nodeserver
-        image: thetips4you/nodeapp:latest
+        image: vaibhavkarade/django-app
         ports:
-        - containerPort: 3000
-        
-        
+        - containerPort: 4000
+        env:
+          - name: HTTP_PROXY
+            value: null
+          - name: HTTPS_PROXY
+            value: null
+
+
 ---
 
 apiVersion: v1
@@ -29,10 +34,10 @@ metadata:
   name: nodeapp-service
 spec:
   selector:
-    app: nodeapp 
-  type: LoadBalancer
+    app: nodeapp
+  type: NodePort
   ports:
   - protocol: TCP
-    port: 5000
-    targetPort: 3000
+    port: 4000
+    targetPort: 4000
     nodePort: 31110
